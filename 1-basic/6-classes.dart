@@ -7,6 +7,18 @@ class Person {
   }
 }
 
+class Student {
+  String? name;
+  String? school;
+  double? grade;
+
+  Student(this.name, this.school, this.grade);
+
+  void printInformation(){
+    print('My name is $name, im from $school , and my grade is $grade');
+  }
+}
+
 void basicClass() {
   Person person1 = Person();
   person1.name = "Budi";
@@ -21,6 +33,18 @@ void basicClass() {
   print("");
 }
 
+void constructorClass(){
+  Student student1 = Student('Putra', 'SMA 2 PALU', 25);
+
+  print(student1.name);
+  print(student1.school);
+  print(student1.grade);
+
+  student1.printInformation();
+}
+
 void main() {
   basicClass();
+  print('===================');
+  constructorClass();
 }
