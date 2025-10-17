@@ -23,6 +23,17 @@ class Person {
   }
 }
 
+class Person2 {
+  String? name;
+  int? age;
+
+  Person2(this.name, this.age);
+
+  void introduce() {
+    print("Halo, nama saya $name, umur $age tahun");
+  }
+}
+
 class Student {
   String? name;
   String? school;
@@ -78,10 +89,52 @@ void getterSetterClass() {
   print("Name: ${person3.getName}");
 }
 
+class Manager extends Person {
+  String? department;
+  String? location;
+
+  // without super keyword
+  Manager(String name, String age, this.department, this.location) {
+    this.name = name;
+    this.age = int.parse(age);
+  }
+  void showDepartment() {
+    print("Department: $department");
+  }
+
+  void showLocation() {
+    print("Location: $location");
+  }
+}
+
+class Employee extends Person2 {
+  String? company;
+
+  // with super keyword
+  Employee(String name, String age, this.company) : super(name, int.parse(age));
+
+  void showCompany() {
+    print("Company: $company");
+  }
+}
+
+void inheritanceClass() {
+  Manager manager1 = Manager("Rina", "35", "HRD", "Jakarta");
+  manager1.introduce();
+  manager1.showDepartment();
+  manager1.showLocation();
+
+  Employee employee1 = Employee("Dodi", "28", "Google");
+  employee1.introduce();
+  employee1.showCompany();
+}
+
 void main() {
   basicClass();
   print('===================');
   constructorClass();
   print('===================');
   getterSetterClass();
+  print('===================');
+  inheritanceClass();
 }
