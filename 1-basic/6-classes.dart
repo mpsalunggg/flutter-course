@@ -129,6 +129,76 @@ void inheritanceClass() {
   employee1.showCompany();
 }
 
+class Shape {
+  int? sides;
+  void draw() {
+    print("Drawing a shape");
+  }
+}
+
+class Circle extends Shape {
+  double? radius;
+
+  Circle(this.radius) {
+    sides = 0;
+  }
+
+  @override
+  void draw() {
+    print("Drawing a circle with radius $radius");
+  }
+}
+
+void overrideClass() {
+  Circle circle = Circle(5);
+  circle.draw();
+}
+
+class StaticExample {
+  static String staticField = "I am a static field";
+
+  static void staticMethod() {
+    print("I am a static method");
+  }
+}
+
+void staticClass() {
+  // example
+  print('Static members are accessed using the class name');
+  print(StaticExample.staticField);
+  StaticExample.staticMethod(); 
+}
+
+abstract class AbstractShape {
+  void draw();
+
+  void info() {
+    print("This is an abstract shape");
+  }
+}
+
+class Circle2 extends AbstractShape {
+  double radius;
+
+  Circle2(this.radius);
+
+  @override
+  void draw() {
+    print("Drawing a circle with radius $radius");
+  }
+
+  @override
+  void info() {
+    print("This is a circle with radius $radius");
+  }
+}
+
+void abstractClass() {
+  Circle2 circle = Circle2(10);
+  circle.draw();
+  circle.info();
+}
+
 void main() {
   basicClass();
   print('===================');
@@ -137,4 +207,10 @@ void main() {
   getterSetterClass();
   print('===================');
   inheritanceClass();
+  print('===================');
+  overrideClass();
+  print('===================');
+  staticClass();
+  print('===================');
+  abstractClass();
 }
