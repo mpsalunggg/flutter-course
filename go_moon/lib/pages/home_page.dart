@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [_pageTitle(), _bookRideWidget()],
               ),
-              Align(child: _astroMoonImage(), alignment: Alignment.centerRight),
+              Align(alignment: Alignment.centerRight, child: _astroMoonImage()),
             ],
           ),
         ),
