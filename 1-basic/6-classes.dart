@@ -166,7 +166,7 @@ void staticClass() {
   // example
   print('Static members are accessed using the class name');
   print(StaticExample.staticField);
-  StaticExample.staticMethod(); 
+  StaticExample.staticMethod();
 }
 
 abstract class AbstractShape {
@@ -199,6 +199,67 @@ void abstractClass() {
   circle.info();
 }
 
+class FactoryClass {
+  String name;
+
+  FactoryClass._internal(this.name);
+
+  factory FactoryClass(String name) {
+    return FactoryClass._internal(name);
+  }
+
+  void showName() {
+    print("Name: $name");
+  }
+}
+
+class SingletonExample {
+  final String name;
+  SingletonExample._internal(this.name);
+
+  static SingletonExample? _instance;
+
+  factory SingletonExample(String name) {
+    // hanya buat instance pertama kali, sisanya kembalikan instance yang sama
+    _instance ??= SingletonExample._internal(name);
+    return _instance!;
+  }
+
+  void show() => print('Singleton name: $name');
+}
+
+class CachedUser {
+  final String name;
+  CachedUser._(this.name);
+
+  static final Map<String, CachedUser> _cache = {};
+
+  factory CachedUser(String name) {
+    return _cache.putIfAbsent(name, () => CachedUser._(name));
+  }
+
+  void show() => print('CachedUser: $name');
+}
+
+void factoryClass() {
+  FactoryClass factory1 = FactoryClass("Factory 1");
+  factory1.showName();
+
+  SingletonExample singleton1 = SingletonExample("Singleton 1");
+  SingletonExample singleton2 = SingletonExample("Singleton 2");
+  singleton1.show();
+  singleton2.show();
+
+  CachedUser("Putra");
+  CachedUser("Budi");
+  CachedUser("Putra"); // tidak bikin baru
+
+  print("Isi cache:");
+  CachedUser._cache.forEach((key, value) {
+    print("Key: $key → Instance: ${value}");
+  });
+}
+
 void main() {
   basicClass();
   print('===================');
@@ -213,4 +274,6 @@ void main() {
   staticClass();
   print('===================');
   abstractClass();
+  print('===================');
+  factoryClass();
 }
