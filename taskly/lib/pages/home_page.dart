@@ -29,16 +29,69 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: _heightDevice * 0.1,
         centerTitle: false,
       ),
-      body: Center(
-        child: Text(
-          'Welcome to Taskly!',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
-          ),
+      body: _taskList(),
+      floatingActionButton: _addTaskButton(),
+    );
+  }
+
+  Widget _taskList() {
+    return ListView(
+      children: [
+        ListTile(
+          title: Text('Task 1'),
+          subtitle: Text('This is the first task.'),
+          trailing: Icon(Icons.check_box_outline_blank),
         ),
+        ListTile(
+          title: Text('Task 2'),
+          subtitle: Text('This is the second task.'),
+          trailing: Icon(Icons.check_box_outline_blank),
+        ),
+        ListTile(
+          title: Text('Task 3'),
+          subtitle: Text('This is the third task.'),
+          trailing: Icon(Icons.check_box_outline_blank),
+        ),
+      ],
+    );
+  }
+
+  Widget _addTaskButton() {
+    return FloatingActionButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return _popupAddTask();
+          },
+        );
+      },
+      backgroundColor: Colors.red,
+      child: Icon(Icons.add, color: Colors.white),
+    );
+  }
+
+  Widget _popupAddTask() {
+    return AlertDialog(
+      title: Text('Add New Task'),
+      content: TextField(
+        decoration: InputDecoration(hintText: 'Enter task details here'),
       ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            // Logic to add the task
+            Navigator.of(context).pop();
+          },
+          child: Text('Add'),
+        ),
+      ],
     );
   }
 }
