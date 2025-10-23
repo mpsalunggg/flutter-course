@@ -11,10 +11,14 @@ class _HomePageState extends State<HomePage> {
   double _heightDevice = 0;
   double _widthDevice = 0;
 
+  String? _taskContent;
+
   @override
   Widget build(BuildContext context) {
     _heightDevice = MediaQuery.of(context).size.height;
     _widthDevice = MediaQuery.of(context).size.width;
+
+    print("input value: $_taskContent");
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -76,6 +80,12 @@ class _HomePageState extends State<HomePage> {
       title: Text('Add New Task'),
       content: TextField(
         decoration: InputDecoration(hintText: 'Enter task details here'),
+        onSubmitted: (_value) {},
+        onChanged: (_value) {
+          setState(() {
+            _taskContent = _value;
+          });
+        },
       ),
       actions: [
         TextButton(
