@@ -4,6 +4,7 @@ import 'package:taskly/pages/home_page.dart';
 
 void main() async {
   await Hive.initFlutter();
+  await Hive.openBox('tasks');
   runApp(const MyApp());
 }
 

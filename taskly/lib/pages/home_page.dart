@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:taskly/models/task.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage();
@@ -12,6 +14,13 @@ class _HomePageState extends State<HomePage> {
   double _widthDevice = 0;
 
   String? _taskContent;
+  late Box _box;
+
+  @override
+  void initState() {
+    super.initState();
+    _box = Hive.box('tasks');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,24 +48,50 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _taskList() {
-    return ListView(
-      children: [
-        ListTile(
-          title: Text('Task 1'),
-          subtitle: Text('This is the first task.'),
-          trailing: Icon(Icons.check_box_outline_blank),
+    List tasks = _box.values.toList();
+
+    if (tasks.isEmpty) {
+      return Center(
+        child: Text(
+          'No tasks yet! Tap + to add one.',
+          style: TextStyle(fontSize: 16, color: Colors.grey),
         ),
-        ListTile(
-          title: Text('Task 2'),
-          subtitle: Text('This is the second task.'),
-          trailing: Icon(Icons.check_box_outline_blank),
-        ),
-        ListTile(
-          title: Text('Task 3'),
-          subtitle: Text('This is the third task.'),
-          trailing: Icon(Icons.check_box_outline_blank),
-        ),
-      ],
+      );
+    }
+
+    return ListView.builder(
+      itemCount: tasks.length,
+      itemBuilder: (context, index) {
+        var taskMap = Map<String, dynamic>.from(tasks[index]);
+        Task task = Task.fromMap(taskMap);
+
+        return ListTile(
+          title: Text(
+            task.content,
+            style: TextStyle(
+              decoration: task.done ? TextDecoration.lineThrough : null,
+            ),
+          ),
+          subtitle: Text(
+            '${task.timestamp.day}/${task.timestamp.month}/${task.timestamp.year} ${task.timestamp.hour}:${task.timestamp.minute.toString().padLeft(2, '0')}',
+          ),
+          trailing: Checkbox(
+            value: task.done,
+            onChanged: (value) {
+              task.done = value!;
+              _box.putAt(index, task.toMap());
+              setState(() {});
+            },
+          ),
+          leading: IconButton(
+            icon: Icon(Icons.delete, color: Colors.red),
+            onPressed: () {
+              _box.deleteAt(index);
+              setState(() {});
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -96,8 +131,18 @@ class _HomePageState extends State<HomePage> {
         ),
         TextButton(
           onPressed: () {
-            // Logic to add the task
-            Navigator.of(context).pop();
+            if (_taskContent != null && _taskContent!.isNotEmpty) {
+              Task newTask = Task(
+                content: _taskContent!,
+                timestamp: DateTime.now(),
+                done: false,
+              );
+              _box.add(newTask.toMap());
+              setState(() {
+                _taskContent = null;
+              });
+              Navigator.of(context).pop();
+            }
           },
           child: Text('Add'),
         ),
